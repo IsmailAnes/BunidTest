@@ -16,6 +16,8 @@ export default function index() {
 
   const getBooks = query => {
     setloading(true);
+    setbookList([]);
+    setpagination(0);
     axios
       .get(
         `https://www.googleapis.com/books/v1/volumes?q=${query}&startIndex=${pagination}&key=AIzaSyCJFy4ODbh9_Ff1Wg573z1nGsK0oK0hYhY`,
