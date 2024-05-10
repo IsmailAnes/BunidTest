@@ -19,6 +19,7 @@ export default function Button(props) {
     icon,
     loading,
     small,
+    fullWidth,
     ...rest
   } = props;
   const styles = useStyles(outlined, white, large, small);
@@ -30,7 +31,7 @@ export default function Button(props) {
       {icon && (
         <Image
           source={icon}
-          style={[styles.iconImg, {marginRight: title ? 10 : 0}]}
+          style={[styles.iconImg, {marginRight: 5}]}
           resizeMode={'contain'}
         />
       )}

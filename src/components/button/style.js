@@ -1,9 +1,9 @@
 import {StyleSheet} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
-export default styles = ( outlined, large, small) =>
+export default styles = ( outlined, large, small, fullWidth) =>
   StyleSheet.create({
     container: {
-      width: large ? RFValue(50, 800) : RFValue(90, 800),
+      width: large ? RFValue(50, 800)  : RFValue(90, 800),
       height: small ? RFValue(50, 800) : RFValue(45, 800),
       backgroundColor: outlined
         ? 'transparent'

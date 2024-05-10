@@ -15,6 +15,7 @@ export default styles = () =>
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
+      marginBottom:1
     },
     title:{
         fontWeight:'bold',

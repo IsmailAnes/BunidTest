@@ -10,7 +10,8 @@ export default function Input(props) {
       <TextInput
         {...rest}
         style={[styles.input, inputStyle]}
-        placeholderTextColor={'black'}
+        placeholderTextColor={'#8C71E4AA'}
+        placeholder='Lancez votre recherche...'
       />
     </View>
   );

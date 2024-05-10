@@ -1,10 +1,10 @@
-import {View, Text, Dimensions, Image, FlatList} from 'react-native';
+import {View, Text, Dimensions, Image, FlatList, Linking} from 'react-native';
 import React from 'react';
 import Button from 'components/button';
 import useStyles from './style';
 
 export default function index(props) {
-    const {title, author, price, link, thumbnail} = props
+  const {title, author, price, link, thumbnail} = props;
   const {height} = Dimensions.get('screen').height;
   const {width} = Dimensions.get('screen').width;
   const styles = useStyles(height, width);
@@ -21,18 +21,33 @@ export default function index(props) {
             borderBottomLeftRadius: 10,
             borderBottomRightRadius: 10,
           }}
-          source={{uri:thumbnail}}
+          source={{uri: thumbnail}}
         />
       </View>
-      <View style={{width: '70%', height: '100%',
-       paddingHorizontal: 10, paddingVertical: 10, justifyContent: 'space-between'}}>
+      <View
+        style={{
+          width: '70%',
+          height: '100%',
+          paddingHorizontal: 10,
+          paddingVertical: 10,
+          justifyContent: 'space-between',
+        }}>
         <View>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.author}>{author}</Text>
+          <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
+            {title}
+          </Text>
+          <Text style={styles.author}>{author}</Text>
         </View>
-        <View style={{width:'100%', flexDirection:'row',justifyContent:'space-between'}}>
-        <Button outlined small title={price} />
-        <Button outlined title={link} />
+        <View
+          style={{
+            width: '100%',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          {price && <Button outlined small title={price} icon={require('../../assets/img/money.png')} />}
+          {link && (
+              <Button onPress={() => Linking.openURL(link)} outlined title={'Acheter'} icon={require('../../assets/img/cart.png')} />
+          )}
         </View>
       </View>
     </View>
