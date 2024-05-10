@@ -6,12 +6,14 @@ import Book from 'components/book';
 import useStyles from './style';
 import axios from 'axios';
 import {DotIndicator} from 'react-native-indicators';
+import {GOOGLE_KEY, API_URL} from 'utility/constant.json' 
 
 export default function index() {
   const [searchedKey, setsearchedKey] = useState('');
   const [bookList, setbookList] = useState([]);
   const [loading, setloading] = useState(false);
   const [pagination, setpagination] = useState(0);
+  const [totalItems, settotalItems] = useState(0);
   const styles = useStyles();
 
   const getBooks = query => {
@@ -20,11 +22,12 @@ export default function index() {
     setpagination(0);
     axios
       .get(
-        `https://www.googleapis.com/books/v1/volumes?q=${query}&startIndex=${pagination}&key=AIzaSyCJFy4ODbh9_Ff1Wg573z1nGsK0oK0hYhY`,
+        `${API_URL}?q=${query}&startIndex=${pagination}&key=${GOOGLE_KEY}`,
       )
       .then(response => {
         if (response.status === 200) {
           setbookList(response.data.items);
+          settotalItems(response.data.totalItems);
           setloading(false);
         }
       })
@@ -34,39 +37,37 @@ export default function index() {
   };
 
   useEffect(() => {
-    setloading(true)
+    setloading(true);
     axios
       .get(
-        `https://www.googleapis.com/books/v1/volumes?q=${searchedKey}&startIndex=${pagination}&key=AIzaSyCJFy4ODbh9_Ff1Wg573z1nGsK0oK0hYhY`,
+        `${API_URL}?q=${searchedKey}&startIndex=${pagination}&key=${GOOGLE_KEY}`,
       )
       .then(response => {
         if (response.status === 200) {
-          setbookList(prevBookList => [...prevBookList, ...response.data.items]);
-          setloading(false)
+          setbookList(prevBookList => [
+            ...prevBookList,
+            ...response.data.items,
+          ]);
+          setloading(false);
         }
       })
       .catch(error => {
-        setloading(false)
+        setloading(false);
       });
   }, [pagination]);
   return (
     <View style={{paddingHorizontal: 10, flex: 1}}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          width: '100%',
-          marginBottom: 10,
-        }}>
+      <View style={styles.searchContainer}>
         <View style={styles.inputContainer}>
           <Input sty onChangeText={value => setsearchedKey(value)} />
         </View>
 
-        <Button title="Search" onPress={() => getBooks(searchedKey)} />
+        <Button title="Chercher" onPress={() => getBooks(searchedKey)} />
       </View>
       <View style={{width: '100%', alignItems: 'flex-end'}}>
-        <Text>total items:{bookList.length}</Text>
+        <Text>
+          total items:{totalItems} | Affichée:{bookList.length}
+        </Text>
       </View>
 
       <FlatList
@@ -76,6 +77,7 @@ export default function index() {
         style={{marginTop: 10}}
         renderItem={({item, index}) => (
           <Book
+            key={index}
             title={item.volumeInfo.title}
             thumbnail={
               'https' + item?.volumeInfo?.imageLinks?.thumbnail.substr(4)

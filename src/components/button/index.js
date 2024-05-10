@@ -9,6 +9,7 @@ import React from 'react';
 import {DotIndicator} from 'react-native-indicators';
 import useStyles from './style';
 
+
 export default function Button(props) {
   const {
     title,
